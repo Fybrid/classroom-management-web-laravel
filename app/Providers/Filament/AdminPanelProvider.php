@@ -26,7 +26,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('')
             // カスタマイズログインクラスを使用
             ->login(Login::class)
             ->colors([
