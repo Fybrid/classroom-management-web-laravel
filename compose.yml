@@ -56,15 +56,15 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       TZ: ${MYSQL_TZ}
 
-#   phpmyadmin:
-#     image: phpmyadmin
-#     environment:
-#       PMA_HOST: "db"
-#       UPLOAD_LIMIT: 102400000 # dumpfile upload用
-#     ports:
-#       - "8888:80"
-#     depends_on:
-#       - db
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      PMA_HOST: "db"
+      UPLOAD_LIMIT: 102400000 # dumpfile upload用
+    ports:
+      - "8888:80"
+    depends_on:
+      - db
 
 #   mailhog:
 #     image: mailhog/mailhog
