@@ -3,29 +3,31 @@ volumes:
 #   redis-store:
   certs-store:
 services:
-  https-portal:
-    image: steveltn/https-portal:1
-    ports:
-      - "80:80"
-      - "443:443"
-    links:
-      - nginx
-    restart: always
-    volumes:
-      - certs-store:/var/lib/https-portal
-    environment:
-      STAGE: 'local' # local/staging/production
-      DOMAINS: lvh.me -> http://nginx:80, www.lvh.me -> http://nginx:80
-      # DOMAINS: username:password@lvh.me -> http://nginx:80 # basic認証
-      WORKER_PROCESSES: auto
-      WORKER_CONNECTIONS: 2048
-      CLIENT_MAX_BODY_SIZE: '128M'
-      WEBSOCKET: 'true'
-      PROXY_BUFFERS: "4 256k"
-      PROXY_BUFFER_SIZE: "256k"
+  # https-portal:
+  #   image: steveltn/https-portal:1
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   links:
+  #     - nginx
+  #   restart: always
+  #   volumes:
+  #     - certs-store:/var/lib/https-portal
+  #   environment:
+  #     STAGE: 'local' # local/staging/production
+  #     DOMAINS: lvh.me -> http://nginx:80, www.lvh.me -> http://nginx:80
+  #     # DOMAINS: username:password@lvh.me -> http://nginx:80 # basic認証
+  #     WORKER_PROCESSES: auto
+  #     WORKER_CONNECTIONS: 2048
+  #     CLIENT_MAX_BODY_SIZE: '128M'
+  #     WEBSOCKET: 'true'
+  #     PROXY_BUFFERS: "4 256k"
+  #     PROXY_BUFFER_SIZE: "256k"
 
   nginx:
     build: ./build/docker/nginx
+    ports:
+      - "80:80"
     volumes:
       - ${WORK_DIR}:/var/www/app
 #       - ./log/nginx:/var/log/nginx
