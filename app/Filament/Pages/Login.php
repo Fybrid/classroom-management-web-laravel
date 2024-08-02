@@ -15,7 +15,7 @@ class Login extends BaseLogin
                 $this->makeForm()
                     ->schema([
                         // 個人番号入力フォーム 追加
-                        TextInput::make('個人番号'),
+                        TextInput::make('personal_id')->label('個人番号'),
                     ])
                     ->statePath('data'),
             ),
@@ -24,7 +24,7 @@ class Login extends BaseLogin
     protected function getCredentialsFromFormData(array $data): array
     {
         return [
-            'personal_id' => $data['個人番号'],
+            'personal_id' => $data['personal_id'],
             'password' => 'password',
         ];
     }

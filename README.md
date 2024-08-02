@@ -28,7 +28,7 @@ $ php artisan migrate:fresh --seed
 ```
 
 ### 3. laravel起動確認
-https://lvh.me
+http://lvh.me
 
 ## コマンドリスト
 ```shell
