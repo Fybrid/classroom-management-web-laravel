@@ -1,0 +1,1 @@
+https://filamentphp.com/plugins

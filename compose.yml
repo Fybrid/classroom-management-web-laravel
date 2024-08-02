@@ -1,0 +1,85 @@
+volumes:
+  db-store:
+#   redis-store:
+  certs-store:
+services:
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - nginx
+    restart: always
+    volumes:
+      - certs-store:/var/lib/https-portal
+    environment:
+      STAGE: 'local' # local/staging/production
+      DOMAINS: lvh.me -> http://nginx:80, www.lvh.me -> http://nginx:80
+      # DOMAINS: username:password@lvh.me -> http://nginx:80 # basic認証
+      WORKER_PROCESSES: auto
+      WORKER_CONNECTIONS: 2048
+      CLIENT_MAX_BODY_SIZE: '128M'
+      WEBSOCKET: 'true'
+      PROXY_BUFFERS: "4 256k"
+      PROXY_BUFFER_SIZE: "256k"
+
+  nginx:
+    build: ./build/docker/nginx
+    volumes:
+      - ${WORK_DIR}:/var/www/app
+#       - ./log/nginx:/var/log/nginx
+    depends_on:
+      - php
+      - workspace
+
+  php:
+    build: ./build/docker/php
+    volumes:
+      - ${WORK_DIR}:/var/www/app
+    depends_on:
+      - db
+#       - mailhog
+#       - redis
+
+  db:
+    image: mysql:8.3
+    volumes:
+      # - ./mysql/data:/var/lib/mysql
+      - db-store:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: ${MYSQL_TZ}
+
+#   phpmyadmin:
+#     image: phpmyadmin
+#     environment:
+#       PMA_HOST: "db"
+#       UPLOAD_LIMIT: 102400000 # dumpfile upload用
+#     ports:
+#       - "8888:80"
+#     depends_on:
+#       - db
+
+#   mailhog:
+#     image: mailhog/mailhog
+#     ports:
+#       - "1025:1025"
+#       - "8025:8025" # メールボックス http://localhost:8025
+
+#   redis:
+#     image: redis:alpine
+#     volumes:
+#       - redis-store:/data
+#     ports:
+#       - "6379:6379"
+
+  workspace:
+    build: ./build/docker/workspace
+    volumes:
+      - ${WORK_DIR}:/var/www/app
