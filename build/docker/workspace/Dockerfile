@@ -27,7 +27,7 @@ WORKDIR /usr/bin
 RUN curl -s https://getcomposer.org/installer | php \
   && ln -s /usr/bin/composer.phar /usr/bin/composer
 
-WORKDIR /var/www
+WORKDIR /var/www/app
 
 RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash - \
   && apt-get install -y nodejs \
