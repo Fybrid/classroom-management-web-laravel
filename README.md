@@ -34,7 +34,7 @@ http://lvh.me
 ```shell
 ```
 
-## ドキュメント
+## ドキュメント(必読!)
 - [git commit rule](./docs/markdown/git/commit.md)
 - [git branch rule](./docs/markdown/git/branch.md)
 - [git release-drafter document](./docs/markdown/git/release-drafter.md)

@@ -36,7 +36,8 @@ class ReservationResource extends Resource
 
                 Forms\Components\DatePicker::make('date')
                     ->required()
-                    ->afterOrEqual(now()->format('Y-m-d')),
+                    ->minDate(now())
+                    // ->afterOrEqual(now()->format('Y-m-d'))
             ]);
     }
 
