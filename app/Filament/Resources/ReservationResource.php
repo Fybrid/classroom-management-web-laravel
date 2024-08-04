@@ -15,6 +15,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TimePicker;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -30,14 +32,23 @@ class ReservationResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('personal_id')->default(Auth::user()->personal_id)->disabled(),
+                TextInput::make('personal_id')->default(Auth::user()->personal_id)->disabled()->label('個人番号') ,
                 
-                Select::make('room_id')->options(Room::all()->pluck('number', 'id')),
+                Select::make('room_id')->options(Room::all()->pluck('number', 'id'))->label('部屋番号'),
+                
+                DatePicker::make('date')->required()->minDate(now())->afterOrEqual(now()->format('Y-m-d'))->label('日付'),
 
-                Forms\Components\DatePicker::make('date')
-                    ->required()
-                    ->minDate(now())
-                    // ->afterOrEqual(now()->format('Y-m-d'))
+                Select::make('period')
+                ->multiple()
+                ->options([
+                    '9:10 ~ 10:40',
+                    '10:50 ~ 12:20',
+                    '13:10 ~ 14:40',
+                    '14:50 ~ 16:20',
+                    '16:30 ~ 18:00',
+                    '18:00 ~ 20:00',
+                ])
+                ->label('時間')
             ]);
     }
 
@@ -45,11 +56,11 @@ class ReservationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('personal_id')->label('個人番号'),
-                Tables\Columns\TextColumn::make('rooms.number'),
-                Tables\Columns\TextColumn::make('date'),
-                Tables\Columns\TextColumn::make('period_name'),
+                // Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('personal_id')->label('ID'),
+                Tables\Columns\TextColumn::make('rooms.number')->label('教室番号'),
+                Tables\Columns\TextColumn::make('date')->label('日付'),
+                Tables\Columns\TextColumn::make('period_name')->label('時間'),
                 Tables\Columns\TextColumn::make('created_at'),
                 Tables\Columns\TextColumn::make('updated_at'),
             ])
