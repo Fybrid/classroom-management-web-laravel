@@ -34,11 +34,12 @@ class ReservationResource extends Resource
             ->schema([
                 TextInput::make('personal_id')->default(Auth::user()->personal_id)->disabled()->label('個人番号') ,
                 
-                Select::make('room_id')->options(Room::all()->pluck('number', 'id'))->label('部屋番号'),
+                Select::make('room_id')->required()->options(Room::all()->pluck('number', 'id'))->label('部屋番号'),
                 
                 DatePicker::make('date')->required()->minDate(now())->afterOrEqual(now()->format('Y-m-d'))->label('日付'),
 
                 Select::make('period')
+                ->required()
                 ->multiple()
                 ->options([
                     '9:10 ~ 10:40',
