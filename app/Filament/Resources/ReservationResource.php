@@ -8,6 +8,7 @@ use App\Models\Reservation;
 use App\Models\Room;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -37,6 +38,17 @@ class ReservationResource extends Resource
                 Forms\Components\DatePicker::make('date')
                     ->required()
                     ->afterOrEqual(now()->format('Y-m-d')),
+
+                    //本日以前の日付は選択不可
+                    DateTimePicker::make('date')
+                    ->label('Appointment date')
+                    ->minDate(now())
+                    //表示日数を30
+                    ->maxDate(ReservationResource::now()->addDays(30))
+                    ->afterOrEqual(to: new Date()),
+                    //月曜から日曜表示
+                    DateTimePicker::make('published_at')->weekStartsOnMonday()
+                    DateTimePicker::make('published_at')->weekStartsOnMonday()
             ]);
     }
 
