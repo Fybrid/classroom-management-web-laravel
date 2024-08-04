@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('number');
+            $table->string('number')->unique();
             $table->string('floor');
             $table->unsignedMediumInteger('capacity');
             $table->timestamps();
@@ -38,6 +38,30 @@ return new class extends Migration
             $table->timestamps();
             $table->unique(['room_id', 'date', 'period']);
         });
+
+        DB::table('reservations')->insert([
+            ['personal_id' => '234567', 'room_id' => '2', 'date' => '2024/8/10', 'period' => 3, 'created_at' => $now, 'updated_at' => $now,],
+        ]);
+
+        Schema::create('room_status', function (Blueprint $table){
+            $table->id();
+            $table->string('number');
+            $table->foreign('number')->references('number')->on('rooms');
+            $table->date('date');
+            $table->tinyInteger('period');
+            $table->tinyInteger('room_status');
+            $table->timestamps();
+            $table->unique(['number', 'date', 'period']);
+        });
+
+        DB::table('room_status')->insert([
+            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 1, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 2, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 3, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 4, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 5, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 6, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+        ]);
     }
 
     /**
@@ -45,6 +69,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('room_status');
+
         Schema::dropIfExists('reservations');
 
         Schema::dropIfExists('rooms');
