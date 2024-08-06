@@ -32,15 +32,16 @@ class ReservationResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('personal_id')->default(Auth::user()->personal_id)->disabled()->label('個人番号') ,
+                TextInput::make('personal_id')->default(Auth::user()->personal_id)->disabled()->label('個人番号'),
                 
                 Select::make('room_id')->required()->options(Room::all()->pluck('number', 'id'))->label('部屋番号'),
                 
                 DatePicker::make('date')->required()->minDate(now())->afterOrEqual(now()->format('Y-m-d'))->label('日付'),
 
+                //TODO 部屋番号みたいな選択形式に変更
                 Select::make('period')
                 ->required()
-                ->multiple()
+                // ->multiple()
                 ->options([
                     '9:10 ~ 10:40',
                     '10:50 ~ 12:20',
@@ -57,7 +58,6 @@ class ReservationResource extends Resource
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('personal_id')->label('ID'),
                 Tables\Columns\TextColumn::make('rooms.number')->label('教室番号'),
                 Tables\Columns\TextColumn::make('date')->label('日付'),

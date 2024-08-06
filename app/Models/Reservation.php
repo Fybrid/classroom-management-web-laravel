@@ -18,4 +18,7 @@ class Reservation extends Model
     public function getPeriodNameAttribute(){
         return config('constant.room_period')[$this->period]['name'];
     }
+
+    protected $fillable = ['personal_id','room_id','date','period']; 
+    // protected $guarded = ['personal_id']; 
 }
