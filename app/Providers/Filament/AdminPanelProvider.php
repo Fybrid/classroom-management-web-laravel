@@ -18,6 +18,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Pages\Login;
+use App\Filament\Widgets\ReservationLink;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,6 +30,10 @@ class AdminPanelProvider extends PanelProvider
             ->path('')
             // カスタマイズログインクラスを使用
             ->login(Login::class)
+            // Shieldプラグイン使用
+            ->plugins([
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
+            ])
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -41,6 +46,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                ReservationLink::class,
             ])
             ->middleware([
                 EncryptCookies::class,
