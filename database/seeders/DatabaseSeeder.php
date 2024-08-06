@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,8 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         //User::factory(10)->create();
 
-        User::factory()->create([
-            'personal_id' => '123456',
-        ]);
+        if(App::isLocal()){
+            User::factory()->create(['personal_id' => '123456',]);
+            User::factory()->create(['personal_id' => '234567',]);
+        }
     }
 }
