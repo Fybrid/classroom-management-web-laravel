@@ -16,16 +16,15 @@ return new class extends Migration
             $table->id();
             $table->string('number')->unique();
             $table->string('floor');
-            $table->unsignedMediumInteger('capacity');
             $table->timestamps();
         });
 
         $now = now();
 
         DB::table('rooms')->insert([
-            ['number' => 'B101', 'floor' => 'B1', 'capacity' => '100', 'created_at' => $now, 'updated_at' => $now,],
-            ['number' => 'B104', 'floor' => 'B1', 'capacity' => '20', 'created_at' => $now, 'updated_at' => $now,],
-            ['number' => 'B112', 'floor' => 'B1', 'capacity' => '24', 'created_at' => $now, 'updated_at' => $now,],
+            ['number' => 'B101', 'floor' => 'B1', 'created_at' => $now, 'updated_at' => $now,],
+            ['number' => 'B104', 'floor' => 'B1', 'created_at' => $now, 'updated_at' => $now,],
+            ['number' => 'B112', 'floor' => 'B1', 'created_at' => $now, 'updated_at' => $now,],
         ]);
 
         Schema::create('reservations', function (Blueprint $table) {
@@ -39,28 +38,24 @@ return new class extends Migration
             $table->unique(['room_id', 'date', 'period']);
         });
 
-        DB::table('reservations')->insert([
-            ['personal_id' => '234567', 'room_id' => '2', 'date' => '2024/8/10', 'period' => 3, 'created_at' => $now, 'updated_at' => $now,],
-        ]);
-
         Schema::create('room_status', function (Blueprint $table){
             $table->id();
-            $table->string('number');
-            $table->foreign('number')->references('number')->on('rooms');
+            $table->unsignedBigInteger('room_id');
+            $table->foreign('room_id')->references('id')->on('rooms');
             $table->date('date');
             $table->tinyInteger('period');
-            $table->tinyInteger('room_status');
+            $table->tinyInteger('status');
             $table->timestamps();
-            $table->unique(['number', 'date', 'period']);
+            $table->unique(['room_id', 'date', 'period']);
         });
-
+        
         DB::table('room_status')->insert([
-            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 1, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
-            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 2, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
-            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 3, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
-            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 4, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
-            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 5, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
-            ['number' => 'B101', 'date' => '2024/8/10', 'period' => 6, 'room_status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['room_id' => 1, 'date' => '2024/8/10', 'period' => 1, 'status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['room_id' => 1, 'date' => '2024/8/10', 'period' => 2, 'status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['room_id' => 1, 'date' => '2024/8/10', 'period' => 3, 'status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['room_id' => 1, 'date' => '2024/8/10', 'period' => 4, 'status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['room_id' => 1, 'date' => '2024/8/10', 'period' => 5, 'status' => 0, 'created_at' => $now, 'updated_at' => $now,],
+            ['room_id' => 1, 'date' => '2024/8/10', 'period' => 6, 'status' => 0, 'created_at' => $now, 'updated_at' => $now,],
         ]);
     }
 
