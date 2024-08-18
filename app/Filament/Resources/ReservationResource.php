@@ -6,6 +6,7 @@ use App\Filament\Resources\ReservationResource\Pages;
 use App\Filament\Resources\ReservationResource\RelationManagers;
 use App\Models\Reservation;
 use App\Models\Room;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -33,9 +35,7 @@ class ReservationResource extends Resource
         return $form
             ->schema([
                 TextInput::make('personal_id')->default(Auth::user()->personal_id)->disabled()->label('個人番号'),
-                
                 Select::make('room_id')->required()->options(Room::all()->pluck('number', 'id'))->label('部屋番号'),
-                
                 DatePicker::make('date')->required()->minDate(now())->afterOrEqual(now()->format('Y-m-d'))->label('日付'),
 
                 //TODO 部屋番号みたいな選択形式に変更
@@ -66,7 +66,9 @@ class ReservationResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
-                //
+                SelectFilter::make('personal_id')
+                    ->options(User::all()->pluck('personal_id', 'personal_id'))
+                    ->default(Auth::user()->personal_id)
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

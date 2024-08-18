@@ -19,6 +19,5 @@ class Reservation extends Model
         return config('constant.room_period')[$this->period]['name'];
     }
 
-    protected $fillable = ['personal_id','room_id','date','period']; 
-    // protected $guarded = ['personal_id']; 
+    protected $fillable = ['personal_id','room_id','date','period'];
 }
